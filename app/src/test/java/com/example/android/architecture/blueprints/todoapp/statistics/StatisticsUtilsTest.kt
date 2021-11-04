@@ -28,65 +28,64 @@ class StatisticsUtilsTest {
 
     @Test
     fun getActiveAndCompletedStats_noCompleted_returnsHundredZero() {
-        val tasks = listOf(
+
+        // criando cenario de teste
+        val tasks = listOf<Task>(
             Task("title", "desc", isCompleted = false)
         )
-        // When the list of tasks is computed with an active task
+
+        // executando ação esperada
         val result = getActiveAndCompletedStats(tasks)
 
-        // Then the percentages are 100 and 0
-        assertThat(result.activeTasksPercent, `is`(100f))
-        assertThat(result.completedTasksPercent, `is`(0f))
+        // testando resultado esperado
+        assertEquals(result.completedTasksPercent, 0f)
+        assertEquals(result.activeTasksPercent, 100f)
+
+        // testando resultado esperado com melhoria de apresentação apra usuario
+        // assertThat(result.completedTasksPercent, `is`(100f))
+        // assertThat(result.activeTasksPercent, `is`(0f))
     }
 
     @Test
-    fun getActiveAndCompletedStats_noActive_returnsZeroHundred() {
-        val tasks = listOf(
+    fun deve_DevolverCompletedTasksPercent100eActiveTasksPercent0_QuandoUmaTarefaConcluidaENenhumaAtiva() {
+        // criando cenario de teste
+        val tasks = listOf<Task>(
             Task("title", "desc", isCompleted = true)
         )
-        // When the list of tasks is computed with a completed task
+
+        // executando ação esperada
         val result = getActiveAndCompletedStats(tasks)
 
-        // Then the percentages are 0 and 100
-        assertThat(result.activeTasksPercent, `is`(0f))
-        assertThat(result.completedTasksPercent, `is`(100f))
+        assertEquals(result.activeTasksPercent, 0f)
+        assertEquals(result.completedTasksPercent, 100f)
     }
 
     @Test
-    fun getActiveAndCompletedStats_both_returnsFortySixty() {
-        // Given 3 completed tasks and 2 active tasks
-        val tasks = listOf(
-            Task("title", "desc", isCompleted = true),
+    fun deve_DevolverCompletedTaskPercent40EActiveTaskPercent60_QuandoDuasTarefasConcluidasETresAtivas() {
+
+        val tasks = listOf<Task>(
             Task("title", "desc", isCompleted = true),
             Task("title", "desc", isCompleted = true),
             Task("title", "desc", isCompleted = false),
+            Task("title", "desc", isCompleted = false),
             Task("title", "desc", isCompleted = false)
         )
-        // When the list of tasks is computed
+
         val result = getActiveAndCompletedStats(tasks)
 
-        // Then the result is 40-60
-        assertThat(result.activeTasksPercent, `is`(40f))
-        assertThat(result.completedTasksPercent, `is`(60f))
+        assertEquals(result.completedTasksPercent, 40f)
+        assertEquals(result.activeTasksPercent, 60f)
     }
 
     @Test
-    fun getActiveAndCompletedStats_error_returnsZeros() {
-        // When there's an error loading stats
-        val result = getActiveAndCompletedStats(null)
+    fun deve_DevolverCompletedTaskPercent0EActiveTasksPercent0_QuandoListaTarefasForVazia(){
+        val tasks = listOf<Task>()
 
-        // Both active and completed tasks are 0
-        assertThat(result.activeTasksPercent, `is`(0f))
-        assertThat(result.completedTasksPercent, `is`(0f))
+        val result = getActiveAndCompletedStats(tasks)
+
+        assertEquals(result.activeTasksPercent, 0f)
+        assertEquals(result.completedTasksPercent, 0f)
     }
 
-    @Test
-    fun getActiveAndCompletedStats_empty_returnsZeros() {
-        // When there are no tasks
-        val result = getActiveAndCompletedStats(emptyList())
-
-        // Both active and completed tasks are 0
-        assertThat(result.activeTasksPercent, `is`(0f))
-        assertThat(result.completedTasksPercent, `is`(0f))
-    }
 }
+
