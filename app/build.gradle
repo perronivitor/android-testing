@@ -25,6 +25,14 @@ android {
         enabled = true
         enabledForTests = true
     }
+
+    android {
+        testOptions {
+            unitTests {
+                includeAndroidResources = true
+            }
+        }
+    }
 }
 
 dependencies {
@@ -61,4 +69,11 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+
+    //AndroidX Test
+    //Espresso dependencies
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+
+    //Robolectric
+    testImplementation 'org.robolectric:robolectric:4.6'
 }
